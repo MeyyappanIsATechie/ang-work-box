@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,13 @@ import { Injectable } from '@angular/core';
 // Not cancellable.
 // Useful for one-time asynchronous operations like HTTP calls.
 
+// An Observable represents a lazy stream of values over time. It can emit multiple values and is cancellable.
+
+// Key Features:
+// Supports multiple values over time.
+// Works well with RxJS operators for powerful transformations.
+// Typically used in Angular for HTTP requests, events, etc.
+
 export class MasterService {
 
   constructor() { }
@@ -19,6 +27,15 @@ export class MasterService {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         resolve('Data received from server');
+      }, 2000);
+    });
+  }
+
+  getDataWithObservable(): Observable<string> {
+    return new Observable(observer => {
+      setTimeout(() => {
+        observer.next('Data fetched with Observable');
+        observer.complete();
       }, 2000);
     });
   }

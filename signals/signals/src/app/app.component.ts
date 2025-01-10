@@ -29,6 +29,9 @@ export class AppComponent implements OnInit {
     this.service.getDataWithPromise().then(data => {
       console.log('Data:', data);
     })
+    this.service.getDataWithObservable().subscribe(data => {
+      console.log('Data:', data);
+    })
     console.log('AppComponent initialized');
     console.log(this.c());
     // this.a = 50;
