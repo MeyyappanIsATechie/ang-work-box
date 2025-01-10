@@ -7,7 +7,7 @@ import { MasterService } from './service/master.service';
   standalone: true,
   imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
 })
 
 // What are Signals?
@@ -21,45 +21,62 @@ import { MasterService } from './service/master.service';
 // Tracks dependencies automatically.
 // Simplifies reactive programming compared to traditional approaches.
 // Avoids the overhead of ChangeDetectionStrategy or async pipes in certain cases.
-
 export class AppComponent implements OnInit {
   title = 'signals';
 
   ngOnInit(): void {
-    this.service.getDataWithPromise().then(data => {
+    this.service.getDataWithPromise().then((data) => {
       console.log('Data:', data);
-    })
-    this.service.getDataWithObservable().subscribe(data => {
+    });
+
+    this.service.getDataWithObservable().subscribe((data) => {
       console.log('Data:', data);
-    })
+    });
+
+    this.service.getDataWithSubject().subscribe((data) => {
+      console.log('Data:', data);
+    });
+    this.service.emitData('Hello from subject');
+
+    this.service.getDataWithBehaviorSubject().subscribe((data) => {
+      console.log('behavior Data:', data);
+    });
+    this.service.changeData('Hello from behaviorSubject');
+
+    this.service.sendData('Value 1');
+    this.service.sendData('Value 2');
+    this.service.sendData('Value 3');
+
+    this.service.getData().subscribe((data) => {
+      console.log(data); // Output: "Value 2", "Value 3"
+    });
+
     console.log('AppComponent initialized');
     console.log(this.c());
     // this.a = 50;
     //signals
     this.a.set(50);
     console.log(this.c());
-    
   }
 
   constructor(private service: MasterService) {
     //effects
-    effect(()=>{
+    effect(() => {
       //cannot modify signals here
       console.log('Count:', this.count());
-    })
-
+    });
   }
 
   count = signal(0);
-  colors = signal(["Red", "Green", "Yellow"]);
-  length = signal(20)
-  breadth = signal(40)
+  colors = signal(['Red', 'Green', 'Yellow']);
+  length = signal(20);
+  breadth = signal(40);
   area = computed(() => this.length() * this.breadth());
 
   // a = 10;
   // b = 20;
   // c = this.a + this.b;
-  
+
   //using signals
   a = signal(10);
   b = signal(20);
@@ -71,7 +88,9 @@ export class AppComponent implements OnInit {
     this.count.update((val) => val + 1);
     console.log('Count incremented:', this.count());
     //'mutate' dropped in A17
-    this.colors.update((colors) => colors.includes("Blue")? colors : [...colors, "Blue"]);
+    this.colors.update((colors) =>
+      colors.includes('Blue') ? colors : [...colors, 'Blue']
+    );
     this.length.update((length) => length + 10);
   }
 }

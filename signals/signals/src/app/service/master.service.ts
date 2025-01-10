@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject, Subject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 
 // A Promise represents a single asynchronous computation that either resolves or rejects. It is eager and starts executing immediately.
@@ -19,9 +19,16 @@ import { Observable } from 'rxjs';
 // Works well with RxJS operators for powerful transformations.
 // Typically used in Angular for HTTP requests, events, etc.
 
-export class MasterService {
+/* 
+A Subject is both an Observable and an Observer. It allows manual control over emissions.
 
-  constructor() { }
+Key Features:
+Does not store previous values.
+Emits values to all active subscribers.
+Useful for multicasting events.
+*/
+export class MasterService {
+  constructor() {}
 
   getDataWithPromise(): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -32,11 +39,43 @@ export class MasterService {
   }
 
   getDataWithObservable(): Observable<string> {
-    return new Observable(observer => {
+    return new Observable((observer) => {
       setTimeout(() => {
         observer.next('Data fetched with Observable');
         observer.complete();
       }, 2000);
     });
+  }
+
+  private subject = new Subject<string>();
+
+  getDataWithSubject(): Observable<string> {
+    return this.subject.asObservable();
+  }
+
+  emitData(data: string): void {
+    this.subject.next(data);
+  }
+
+  //behavior subjects
+
+  private behaviorSubject = new BehaviorSubject<string>('Initial data');
+
+  getDataWithBehaviorSubject(): Observable<string> {
+    return this.behaviorSubject.asObservable();
+  }
+
+  changeData(data: string): void {
+    this.behaviorSubject.next(data);
+  }
+
+  private replaySubject = new ReplaySubject<string>(2); // Buffer size of 2
+
+  sendData(data: string) {
+    this.replaySubject.next(data);
+  }
+
+  getData(): Observable<string> {
+    return this.replaySubject.asObservable();
   }
 }
