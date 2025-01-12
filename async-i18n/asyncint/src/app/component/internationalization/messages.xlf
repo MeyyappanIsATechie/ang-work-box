@@ -1,0 +1,4 @@
+<trans-unit id="welcomeMessage" datatype="html">
+  <source>Hello, World!</source>
+  <target>Bonjour, le monde!</target>
+</trans-unit>
