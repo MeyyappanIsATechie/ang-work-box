@@ -1,2 +1,9 @@
-<h1 i18n>hello world!</h1>
-<p i18n>order total is {{total | currency}}</p>
+<h1 i18n="greet">hello world!</h1>
+<p i18n>order total is {{total | currency: 'USD'}}</p>
+<p i18n>
+    {itemCount, plural,
+        =0 {You have no items in your cart.}
+        =1 {You have one item in your cart.}
+        other {You have # items in your cart.}
+    }
+</p>

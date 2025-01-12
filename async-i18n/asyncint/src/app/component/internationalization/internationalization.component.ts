@@ -10,4 +10,5 @@ import { Component, NgModule } from '@angular/core';
 })
 export class InternationalizationComponent {
 total = 500.50;
+itemCount = 5;
 }
