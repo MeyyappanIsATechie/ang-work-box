@@ -1,0 +1,4 @@
+<div *ngIf="timeLeft > 0">Countdown: {{timeLeft}}</div>
+<div *ngIf="timeLeft === 0">Time's up!</div>
+<button (click)="startTimer()" [disabled]="isTimerRunning">start</button>
+<button (click)="cancelTimer()" [disabled]="!isTimerRunning">cancel</button>
