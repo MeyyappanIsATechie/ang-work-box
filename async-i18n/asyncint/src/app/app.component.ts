@@ -15,4 +15,10 @@ import { InternationalizationComponent } from "./component/internationalization/
 })
 export class AppComponent {
   title = 'asyncint';
+  calculateMensSalary(salary: number){
+    return salary;
+  }
+  calculateWomensSalary(salary: number){
+    return salary * 0.9;
+  }//misogyny!!!!!!
 }
